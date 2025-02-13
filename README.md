@@ -10,7 +10,7 @@
 
 ## 4. Error Handling
 - **Controller**: currently, there is no error handling yet, e.g., for when a product is not found. I will fix this so that the program will show an error message or redirect the users.
-- **Repository**: `findById()` returns `null` when a product is not found. i will fix this by throwing a custom exception like `ProductNotFoundException`.
+- **Repository**: `findById()` returns `null` when a product is not found. I will fix this by, for example, throwing a custom exception like `ProductNotFoundException`.
 
 ## 5. Secure Coding
 - **Input Validation**: i have not yet implement input validation. It's important to validate inputs in the controller, especially for fields like `productName` and `productQuantity`.
