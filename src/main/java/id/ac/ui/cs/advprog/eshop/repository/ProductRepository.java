@@ -54,6 +54,21 @@ public class ProductRepository {
      * @return The updated product or null if not found.
      */
     public Product update(Product updatedProduct) {
+        // Validasi input
+        if (updatedProduct == null) {
+            throw new IllegalArgumentException("Updated product cannot be null");
+        }
+        if (updatedProduct.getProductId() == null || updatedProduct.getProductId().isEmpty()) {
+            throw new IllegalArgumentException("Product ID cannot be null or empty");
+        }
+        if (updatedProduct.getProductName() == null || updatedProduct.getProductName().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be null or empty");
+        }
+        if (updatedProduct.getProductQuantity() < 0) {
+            throw new IllegalArgumentException("Product quantity cannot be negative");
+        }
+
+        // Update product jika ditemukan
         for (int i = 0; i < productData.size(); i++) {
             Product product = productData.get(i);
             if (product.getProductId().equals(updatedProduct.getProductId())) {
@@ -61,6 +76,8 @@ public class ProductRepository {
                 return updatedProduct;
             }
         }
+
+        // Jika product tidak ditemukan, kembalikan null
         return null;
     }
 
@@ -69,6 +86,11 @@ public class ProductRepository {
      * @param productId The ID of the product to be deleted.
      */
     public void deleteById(String productId) {
-        productData.removeIf(product -> product.getProductId().equals(productId));
+        for(Product product : productData) {
+            if(product.getProductId().equals(productId)) {
+                productData.remove(product);
+                product = null;
+            }
+        }
     }
 }
