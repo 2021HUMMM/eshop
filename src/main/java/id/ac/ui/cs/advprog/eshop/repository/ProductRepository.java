@@ -85,12 +85,15 @@ public class ProductRepository {
      * Deletes a product by its ID.
      * @param productId The ID of the product to be deleted.
      */
-    public void deleteById(String productId) {
-        for(Product product : productData) {
-            if(product.getProductId().equals(productId)) {
-                productData.remove(product);
-                product = null;
+    public Product deleteById(String productId) {
+        Iterator<Product> iterator = productData.iterator();
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (product.getProductId().equals(productId)) {
+                iterator.remove(); // Gunakan iterator untuk menghapus elemen dengan aman
+                return product;
             }
         }
+        return null;
     }
 }

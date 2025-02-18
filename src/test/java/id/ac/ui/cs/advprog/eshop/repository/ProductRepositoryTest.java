@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
 import id.ac.ui.cs.advprog.eshop.model.Product;
+import id.ac.ui.cs.advprog.eshop.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,12 +15,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductRepositoryTest {
+    Product product;
 
     @InjectMocks
     ProductRepository productRepository;
 
     @BeforeEach
-    void setUp() {
+    void setup() {
+
     }
 
     @Test
@@ -64,6 +67,82 @@ class ProductRepositoryTest {
         savedProduct = productIterator.next();
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
+    }
+    // Positive test for editing product
+    @Test
+    void testEditProduct_Positive() {
+        // Edit product details
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        product.setProductName("Sampo Cap Bambang Baru");
+        product.setProductQuantity(150);
+        productRepository.update(product);
+
+        // Assert the changes
+        assertEquals("Sampo Cap Bambang Baru", product.getProductName());
+        assertEquals(150, product.getProductQuantity());
+    }
+
+    // Negative test for editing product (invalid name)
+    @Test
+    void testEditProduct_Negative_InvalidName() {
+        // Arrange
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product); // Simpan produk sebelum diuji
+
+        // Act & Assert
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            product.setProductName("");
+            productRepository.update(product); // Memanggil method update
+        });
+
+        assertEquals("Product name cannot be null or empty", exception.getMessage());}
+
+    // Negative test for editing product (invalid quantity)
+    @Test
+    void testEditProduct_Negative_InvalidQuantity() {
+        // Simulasikan pengaturan kuantitas produk yang tidak valid
+        this.product = new Product();
+        this.product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        this.product.setProductName("Sampo Cap Bambang");
+        this.product.setProductQuantity(100);
+        productRepository.create(product);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            product.setProductQuantity(-10); // Kuantitas negatif
+            productRepository.update(product);
+        });
+
+        // Verifikasi pesan kesalahan yang diharapkan
+        assertEquals("Product quantity cannot be negative", exception.getMessage());
+    }
+
+    // Positive test for deleting product
+    @Test
+    void testDeleteProduct_Positive() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        productRepository.deleteById(product.getProductId());
+
+        // Assert that the product is deleted
+        assertNull(productRepository.findById(product.getProductId()));
+    }
+
+    // Negative test for deleting product (product not found)
+    @Test
+    void testDeleteProduct_Negative_ProductNotFound() {
+        Product product = productRepository.deleteById("aku suka kucing cerdas");
+        assertNull(product);
     }
 
 }
