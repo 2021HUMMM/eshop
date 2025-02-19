@@ -42,9 +42,7 @@ public class ProductRepository {
     public Product findById(String productId) {
         for (Product product : productData) {
             if (product.getProductId().equals(productId)) {
-                return product;
-            }
-        }
+                return product;}}
         return null;
     }
 
@@ -86,14 +84,15 @@ public class ProductRepository {
      * @param productId The ID of the product to be deleted.
      */
     public Product deleteById(String productId) {
+        if (productId == null) {
+            return null;
+        }
         Iterator<Product> iterator = productData.iterator();
         while (iterator.hasNext()) {
             Product product = iterator.next();
             if (product.getProductId().equals(productId)) {
                 iterator.remove(); // Gunakan iterator untuk menghapus elemen dengan aman
-                return product;
-            }
-        }
+                return product;}}
         return null;
     }
 }

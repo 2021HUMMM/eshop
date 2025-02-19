@@ -24,6 +24,21 @@ class ProductRepositoryTest {
     void setup() {
 
     }
+    @Test
+    void testCreateProduct_noID() {
+        Product product = new Product();
+        product.setProductName("testing");
+        product.setProductQuantity(500);
+        productRepository.create(product);
+        assertNotNull(product.getProductId());
+    }
+    void testCreateProduct_withID() {
+        Product product = new Product();
+        product.setProductName("testing");
+        product.setProductQuantity(500);
+        productRepository.create(product);
+        assertNotNull(product.getProductId());
+    }
 
     @Test
     void testCreateAndFind() {
@@ -68,6 +83,7 @@ class ProductRepositoryTest {
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
     }
+
     // Positive test for editing product
     @Test
     void testEditProduct_Positive() {
@@ -86,6 +102,36 @@ class ProductRepositoryTest {
         assertEquals("Sampo Cap Bambang Baru", product.getProductName());
         assertEquals(150, product.getProductQuantity());
     }
+    @Test
+    void testEditProduct_Positive_id() {
+        // Edit product details
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        product.setProductId("testing aja");
+        productRepository.update(product);
+
+        // Assert the changes
+        assertEquals("testing aja", product.getProductId());
+    }
+    @Test
+    void testEditProduct_Positive_name() {
+        // Edit product details
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        product.setProductName("Sampo Cap Bambang Baru");
+        productRepository.update(product);
+
+        // Assert the changes
+        assertEquals("Sampo Cap Bambang Baru", product.getProductName());
+    }
 
     // Negative test for editing product (invalid name)
     @Test
@@ -103,7 +149,25 @@ class ProductRepositoryTest {
             productRepository.update(product); // Memanggil method update
         });
 
-        assertEquals("Product name cannot be null or empty", exception.getMessage());}
+        assertEquals("Product name cannot be null or empty", exception.getMessage());
+    }
+    @Test
+    void testEditProduct_Negative_InvalidName2() { // maaf kak minggu lalu saya kira negative test itu ngebuat build failed, ternyata seharusnya tetap success
+        // Arrange
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product); // Simpan produk sebelum diuji
+
+        // Act & Assert
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            product.setProductName(null);
+            productRepository.update(product); // Memanggil method update
+        });
+
+        assertEquals("Product name cannot be null or empty", exception.getMessage());
+    }
 
     @Test
     void testEditProduct_Negative_ProductId() {
@@ -115,6 +179,23 @@ class ProductRepositoryTest {
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             product.setProductId("");
+            productRepository.update(product);
+        });
+
+        // Verifikasi pesan kesalahan yang diharapkan
+        assertEquals("Product ID cannot be null or empty", exception.getMessage());
+
+    }
+    @Test
+    void testEditProduct_Negative_ProductId2() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            product.setProductId(null);
             productRepository.update(product);
         });
 
@@ -148,6 +229,41 @@ class ProductRepositoryTest {
         assertEquals("Updated product cannot be null", exception.getMessage());
 
     }
+    @Test
+    void testEditProduct_Negative_productExistsButIdMismatch(){
+        Product existingProduct = new Product();
+        existingProduct.setProductId("random-id-123");
+        existingProduct.setProductName("Sabun Wangi");
+        existingProduct.setProductQuantity(50);
+        productRepository.create(existingProduct); // Tambahkan produk ke dalam repository
+
+        Product product = new Product();
+        product.setProductId("non-existent-id-999"); // ID ini tidak ada
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+
+        assertNull(productRepository.update(product)); // Loop tetap jalan, tapi return null
+    }
+
+    @Test
+    void testEditProduct_Negative_productNotFound(){
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+
+        assertNull(productRepository.update(product));
+    }
+    @Test
+    void testEditProduct_Positive_productFound(){
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+        product.setProductName("Sampo Cap Bambang Baru");
+        assertNotNull(productRepository.update(product));
+    }
 
     // Positive test for deleting product
     @Test
@@ -163,12 +279,41 @@ class ProductRepositoryTest {
         // Assert that the product is deleted
         assertNull(productRepository.findById(product.getProductId()));
     }
+    @Test
+    void testDeleteProduct_Positive2() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product newproduct = productRepository.deleteById(product.getProductId());
+        assertNotNull(newproduct);
+    }
+
 
     // Negative test for deleting product (product not found)
     @Test
     void testDeleteProduct_Negative_ProductNotFound() {
         Product product = productRepository.deleteById("aku suka kucing cerdas");
         assertNull(product);
+    }
+    // Negative test for deleting product (product not found)
+    @Test
+    void testDeleteProduct_Negative_ProductNotFound2() {
+        Product product = productRepository.deleteById(null);
+        assertNull(product);
+    }
+    @Test
+    void testDeleteProduct_Negative_ProductNotFound3() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product newproduct = productRepository.deleteById("testing aja");
+        assertNull(newproduct);
     }
 
     @Test
@@ -182,5 +327,22 @@ class ProductRepositoryTest {
         product = productRepository.findById(product.getProductId());
         assertNotNull(product);
     }
+    @Test
+    void testFindById_negative(){
+        Product product = productRepository.findById("aku suka kucing cerdas");
+        assertNull(product);
+    }
+    @Test
+    void testFindById_negative_repoFilled(){
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product newproduct = productRepository.findById("aku suka kucing cerdas");
+        assertNull(newproduct);
+    }
+
 
 }
