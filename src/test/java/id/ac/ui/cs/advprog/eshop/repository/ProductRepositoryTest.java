@@ -89,7 +89,7 @@ class ProductRepositoryTest {
 
     // Negative test for editing product (invalid name)
     @Test
-    void testEditProduct_Negative_InvalidName() {
+    void testEditProduct_Negative_InvalidName() { // maaf kak minggu lalu saya kira negative test itu ngebuat build failed, ternyata seharusnya tetap success
         // Arrange
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -105,14 +105,31 @@ class ProductRepositoryTest {
 
         assertEquals("Product name cannot be null or empty", exception.getMessage());}
 
+    @Test
+    void testEditProduct_Negative_ProductId() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            product.setProductId("");
+            productRepository.update(product);
+        });
+
+        // Verifikasi pesan kesalahan yang diharapkan
+        assertEquals("Product ID cannot be null or empty", exception.getMessage());
+
+    }
     // Negative test for editing product (invalid quantity)
     @Test
     void testEditProduct_Negative_InvalidQuantity() {
         // Simulasikan pengaturan kuantitas produk yang tidak valid
-        this.product = new Product();
-        this.product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        this.product.setProductName("Sampo Cap Bambang");
-        this.product.setProductQuantity(100);
+        product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
         productRepository.create(product);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             product.setProductQuantity(-10); // Kuantitas negatif
@@ -121,6 +138,15 @@ class ProductRepositoryTest {
 
         // Verifikasi pesan kesalahan yang diharapkan
         assertEquals("Product quantity cannot be negative", exception.getMessage());
+    }
+    @Test
+    void testEditProduct_Negative_product(){
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.update(null);
+        });
+        assertEquals("Updated product cannot be null", exception.getMessage());
+
     }
 
     // Positive test for deleting product
@@ -143,6 +169,18 @@ class ProductRepositoryTest {
     void testDeleteProduct_Negative_ProductNotFound() {
         Product product = productRepository.deleteById("aku suka kucing cerdas");
         assertNull(product);
+    }
+
+    @Test
+    void testFindById(){
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        product = productRepository.findById(product.getProductId());
+        assertNotNull(product);
     }
 
 }
