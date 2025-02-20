@@ -255,7 +255,7 @@ class ProductRepositoryTest {
         assertNull(productRepository.update(product));
     }
     @Test
-    void testEditProduct_Positive_productFound(){
+    void testEditProductPositiveProductFound(){
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         product.setProductName("Sampo Cap Bambang");
