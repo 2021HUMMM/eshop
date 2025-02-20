@@ -1,0 +1,46 @@
+name: Code Analysis with PMD
+
+on:
+  push:
+    branches:
+      - '*'
+
+permissions:
+  contents: read
+  security-events: write
+  actions: write
+
+jobs:
+  pmd_analysis:
+    name: Run PMD Code Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java Environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Execute PMD Analysis
+        uses: pmd/pmd-github-action@v2
+        with:
+          version: '7.0.0-rc4'
+          sourcePath: 'src/'
+          rulesets: 'rulesets/java/quickstart.xml,ruleset.xml'
+          analyzeModifiedFilesOnly: false
+
+      - name: Upload PMD SARIF Report
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: pmd-report.sarif
+
+      - name: Save SARIF Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmd-sarif-report
+          path: pmd-report.sarif
+          retention-days: 5
