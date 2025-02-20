@@ -25,14 +25,15 @@ class ProductRepositoryTest {
 
     }
     @Test
-    void testCreateProduct_noID() {
+    void testCreateProductWithoutID() {
         Product product = new Product();
         product.setProductName("testing");
         product.setProductQuantity(500);
         productRepository.create(product);
         assertNotNull(product.getProductId());
     }
-    void testCreateProduct_withID() {
+    @Test
+    void testCreateProductWithID() {
         Product product = new Product();
         product.setProductName("testing");
         product.setProductQuantity(500);
