@@ -83,7 +83,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testFindProductById_NotFound() {
+    void testFindProductByIdNotFound() {
         when(productRepository.findById("999")).thenReturn(null);
 
         Product foundProduct = productService.findById("999");
