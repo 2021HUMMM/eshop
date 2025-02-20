@@ -86,7 +86,7 @@ class ProductRepositoryTest {
 
     // Positive test for editing product
     @Test
-    void testEditProduct_Positive() {
+    void testEditProductPositive() {
         // Edit product details
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -103,7 +103,7 @@ class ProductRepositoryTest {
         assertEquals(150, product.getProductQuantity());
     }
     @Test
-    void testEditProduct_Positive_id() {
+    void testEditProductPositiveId() {
         // Edit product details
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -118,7 +118,7 @@ class ProductRepositoryTest {
         assertEquals("testing aja", product.getProductId());
     }
     @Test
-    void testEditProduct_Positive_name() {
+    void testEditProductPositiveName() {
         // Edit product details
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -135,7 +135,7 @@ class ProductRepositoryTest {
 
     // Negative test for editing product (invalid name)
     @Test
-    void testEditProduct_Negative_InvalidName() { // maaf kak minggu lalu saya kira negative test itu ngebuat build failed, ternyata seharusnya tetap success
+    void testEditProductNegativeEmptyName() { // maaf kak minggu lalu saya kira negative test itu ngebuat build failed, ternyata seharusnya tetap success
         // Arrange
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -152,7 +152,7 @@ class ProductRepositoryTest {
         assertEquals("Product name cannot be null or empty", exception.getMessage());
     }
     @Test
-    void testEditProduct_Negative_InvalidName2() { // maaf kak minggu lalu saya kira negative test itu ngebuat build failed, ternyata seharusnya tetap success
+    void testEditProductNegativeNullName() { // maaf kak minggu lalu saya kira negative test itu ngebuat build failed, ternyata seharusnya tetap success
         // Arrange
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -170,7 +170,7 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void testEditProduct_Negative_ProductId() {
+    void testEditProductNegativeProductIdEmpty() {
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         product.setProductName("Sampo Cap Bambang");
@@ -187,7 +187,7 @@ class ProductRepositoryTest {
 
     }
     @Test
-    void testEditProduct_Negative_ProductId2() {
+    void testEditProductNegativeProductIdNull() {
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         product.setProductName("Sampo Cap Bambang");
@@ -205,7 +205,7 @@ class ProductRepositoryTest {
     }
     // Negative test for editing product (invalid quantity)
     @Test
-    void testEditProduct_Negative_InvalidQuantity() {
+    void testEditProductNegativeInvalidQuantity() {
         // Simulasikan pengaturan kuantitas produk yang tidak valid
         product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -221,7 +221,7 @@ class ProductRepositoryTest {
         assertEquals("Product quantity cannot be negative", exception.getMessage());
     }
     @Test
-    void testEditProduct_Negative_product(){
+    void testEditProductNegativeNullProduct(){
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             productRepository.update(null);
@@ -230,7 +230,7 @@ class ProductRepositoryTest {
 
     }
     @Test
-    void testEditProduct_Negative_productExistsButIdMismatch(){
+    void testEditProductNegativeProductExistsButIdMismatch(){
         Product existingProduct = new Product();
         existingProduct.setProductId("random-id-123");
         existingProduct.setProductName("Sabun Wangi");
@@ -294,18 +294,18 @@ class ProductRepositoryTest {
 
     // Negative test for deleting product (product not found)
     @Test
-    void testDeleteProduct_Negative_ProductNotFound() {
+    void testDeleteProductNegativeIdNotFound() {
         Product product = productRepository.deleteById("aku suka kucing cerdas");
         assertNull(product);
     }
     // Negative test for deleting product (product not found)
     @Test
-    void testDeleteProduct_Negative_ProductNotFound2() {
+    void testDeleteProductNegativeNullId() {
         Product product = productRepository.deleteById(null);
         assertNull(product);
     }
     @Test
-    void testDeleteProduct_Negative_ProductNotFound3() {
+    void testDeleteProductNegativeIdNotFound2() {
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         product.setProductName("Sampo Cap Bambang");
@@ -328,12 +328,12 @@ class ProductRepositoryTest {
         assertNotNull(product);
     }
     @Test
-    void testFindById_negative(){
+    void testFindByIdNegativeRandomId(){
         Product product = productRepository.findById("aku suka kucing cerdas");
         assertNull(product);
     }
     @Test
-    void testFindById_negative_repoFilled(){
+    void testFindByIdNegativeNotEmptyList(){
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         product.setProductName("Sampo Cap Bambang");
