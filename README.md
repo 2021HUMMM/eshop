@@ -35,6 +35,11 @@ logic into a base test class or utility methods, and externalize test data (e.g.
 
 # MODULE 2
 
+- deployment link: https://dull-jori-2021hummm-1a08dec6.koyeb.app/
+- code coverage:
+
+![code-coverage](https://i.ibb.co.com/8DXYGQ0J/code-coverage.png)
+
 ## Reflection
 
 ### 1. Problems & Solutions:
