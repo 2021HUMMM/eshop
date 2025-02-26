@@ -14,9 +14,23 @@ public class CarServiceImpl implements CarService {
     @Autowired
     private CarRepository carRepository;
 
+    public void validation(Car car){
+        if (car.getCarName() == null || car.getCarName().isEmpty()) {
+            throw new IllegalArgumentException("Car name cannot be empty");
+        }
+        if (car.getCarColor() == null || car.getCarColor().isEmpty()){
+            throw new IllegalArgumentException("Car color cannot be empty");
+        }
+
+        if (car.getCarQuantity() < 0) {
+            throw new IllegalArgumentException("Car quantity cannot be negative");
+        }
+    }
+
     @Override
     public Car create(Car car) {
         // TODO Auto-generated method stub
+        validation(car);
         carRepository.create(car);
         return car;
     }
