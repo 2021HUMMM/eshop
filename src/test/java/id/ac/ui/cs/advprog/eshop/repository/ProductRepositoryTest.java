@@ -136,7 +136,7 @@ class ProductRepositoryTest {
 
     // Negative test for editing product (invalid name)
     @Test
-    void testEditProductNegativeEmptyName() { // maaf kak minggu lalu saya kira negative test itu ngebuat build failed, ternyata seharusnya tetap success
+    void testEditProductNegativeEmptyName() {
         // Arrange
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
