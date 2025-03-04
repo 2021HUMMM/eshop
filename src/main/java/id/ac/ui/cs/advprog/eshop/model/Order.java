@@ -16,6 +16,30 @@ public class Order {
     String author;
     String status;
 
+    @Getter
+    public enum OrderStatus {
+        WAITING_PAYMENT("WAITING_PAYMENT"),
+        FAILED("FAILED"),
+        SUCCESS("SUCCESS"),
+        CANCELLED("CANCELLED");
+
+        private final String value;
+
+        private OrderStatus(String value) {
+            this.value = value;
+        }
+
+        public static boolean contains(String param) {
+            for (OrderStatus orderStatus : OrderStatus.values()) {
+                if (orderStatus.name().equals(param)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+
     public void setStatus(String status) {
         String[] statusList = {"WAITING_PAYMENT", "FAILED", "SUCCESS", "CANCELLED"};
         if (Arrays.stream(statusList).noneMatch(item -> (item.equals(status)))) {
