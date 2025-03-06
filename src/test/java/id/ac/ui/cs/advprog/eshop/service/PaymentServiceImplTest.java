@@ -55,7 +55,7 @@ class PaymentServiceTest {
         Payment result = paymentService.addPayment(order, "Bank Transfer", payment.getPaymentData());
 
         verify(paymentRepository, times(1)).save(any(Payment.class));
-        assertEquals(payment.getMethod(), result.getMethod());
+        assertEquals(payment.getPaymentMethod(), result.getPaymentMethod());
         assertEquals(payment.getOrder().getId(), result.getOrder().getId());
     }
 
@@ -96,7 +96,7 @@ class PaymentServiceTest {
         Payment result = paymentService.getPayment("pay123");
 
         assertNotNull(result);
-        assertEquals("pay123", result.getPaymentId());
+        assertEquals("pay123", result.getId());
     }
 
     @Test
