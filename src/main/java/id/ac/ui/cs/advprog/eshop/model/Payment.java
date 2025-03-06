@@ -48,9 +48,11 @@ public class Payment {
 
             if (isEmpty(bankName) || isEmpty(referenceCode)) {
                 this.status = "REJECTED";
+                this.getOrder().setStatus("FAILED");
             } else {
                 this.paymentData = paymentData;
                 this.status = "SUCCESS";
+                this.getOrder().setStatus("SUCCESS");
             }
         } else if (paymentMethod.equals("Voucher code")) {
             if (!paymentData.containsKey("voucherCode")) {
@@ -62,8 +64,10 @@ public class Payment {
             if (isValidVoucher(voucherCode)) {
                 this.paymentData = paymentData;
                 this.status = "SUCCESS";
+                this.getOrder().setStatus("SUCCESS");
             } else {
                 this.status = "REJECTED";
+                this.getOrder().setStatus("FAILED");
             }
         }
     }
