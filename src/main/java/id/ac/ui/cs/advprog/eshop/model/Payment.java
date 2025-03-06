@@ -8,6 +8,7 @@ import  lombok.Setter;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 
 @Getter
@@ -15,13 +16,13 @@ public class Payment {
     String id;
     String paymentMethod;
     Map<String, String> paymentData;
-    String orderId;
+    Order order;
     String status = "PENDING";
 
-    public Payment(String id, String paymentMethod, Map<String, String> paymentData, String orderId) {
-        this.id = id;
+    public Payment(String paymentMethod, Map<String, String> paymentData, Order order) {
+        this.id = UUID.randomUUID().toString();
         this.paymentMethod = paymentMethod;
-        this.orderId = orderId;
+        this.order = order;
         this.setPaymentData(paymentMethod,paymentData);
         this.setPaymentMethod(paymentMethod);
     }
