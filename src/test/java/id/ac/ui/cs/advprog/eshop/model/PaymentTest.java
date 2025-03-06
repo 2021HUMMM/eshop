@@ -99,6 +99,5 @@ class PaymentTest {
 
         assertEquals("REJECTED", payment.getStatus());
     }
-
 }
 
