@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Repository
 public class PaymentRepository {
@@ -35,13 +36,7 @@ public class PaymentRepository {
         return null;
     }
 
-    public List<Payment> findAllByOrder(String orderId) {
-        List<Payment> result = new ArrayList<>();
-        for (Payment savedPayment : paymentData) {
-            if (savedPayment.getOrder().getId().equals(orderId)) {
-                result.add(savedPayment);
-            }
-        }
-        return result;
+    public List<Payment> findAll() {
+        return new ArrayList<>(paymentData);
     }
 }

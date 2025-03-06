@@ -41,11 +41,12 @@ class PaymentServiceTest {
         product1.setProductQuantity(2);
         products.add(product1);
 
-        order = new Order("123", products, 1708560000L, "Safina Sudrajat", "PENDING");
+        order = new Order("123", products, 1708560000L, "Safina Sudrajat");
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("bankName", "BCA");
         paymentData.put("referenceCode", "REF123456");
         payment = new Payment("Bank Transfer", paymentData, order);
+        payment.setId("pay123");
     }
 
     @Test

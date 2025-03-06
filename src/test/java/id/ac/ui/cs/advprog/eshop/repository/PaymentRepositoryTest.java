@@ -86,12 +86,13 @@ class PaymentRepositoryTest {
     }
 
     @Test
-    void testFindAllByOrderIfOrderCorrect() {
+    void testFindAllReturnsAllPayments() {
         for (Payment payment : payments) {
             paymentRepository.save(payment);
         }
 
-        List<Payment> paymentList = paymentRepository.findAllByOrder(payments.get(1).getOrder().getId());
-        assertEquals(1, paymentList.size());
+        List<Payment> paymentList = paymentRepository.findAll();
+        assertEquals(payments.size(), paymentList.size());
     }
+
 }

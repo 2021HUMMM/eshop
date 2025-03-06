@@ -12,6 +12,7 @@ import java.util.UUID;
 
 
 @Getter
+@Setter
 public class Payment {
     String id;
     String paymentMethod;
