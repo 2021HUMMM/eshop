@@ -15,7 +15,8 @@ class PaymentTest {
     @Test
     void testCreatePayment() {
         Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("Niaga", "9999");
+        paymentData.put("bankName", "Niaga");
+        paymentData.put("referenceCode", "12345");
         Payment payment = new Payment(
                 "13652556-012a-4c07-b546-54eb1396d79b",
                 "Bank Transfer",
@@ -30,7 +31,8 @@ class PaymentTest {
     @Test
     void testCreatePaymentBankTransfer() {
         Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("Niaga", "9999");
+        paymentData.put("bankName", "Niaga");
+        paymentData.put("referenceCode", "12345");
         Payment payment = new Payment(
                 "13652556-012a-4c07-b546-54eb1396d79b",
                 "Bank Transfer",
@@ -57,7 +59,8 @@ class PaymentTest {
     void testCreatePaymentInvalidMethod() {
         assertThrows(IllegalArgumentException.class, () -> {
             Map<String, String> paymentData = new HashMap<>();
-            paymentData.put("Niaga", "9999");
+            paymentData.put("bankName", "Niaga");
+            paymentData.put("referenceCode", "12345");
             Payment payment = new Payment(
                     "13652556-012a-4c07-b546-54eb1396d79b",
                     "chopin",
@@ -69,10 +72,11 @@ class PaymentTest {
     @Test
     void testSetPaymentStatusSuccess() {
         Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("Niaga", "9999");
+        paymentData.put("bankName", "Niaga");
+        paymentData.put("referenceCode", "12345");
         Payment payment = new Payment(
                 "13652556-012a-4c07-b546-54eb1396d79b",
-                "chopin",
+                "Bank Transfer",
                 paymentData,
                 "tanzania"
         );
@@ -83,10 +87,11 @@ class PaymentTest {
     @Test
     void testSetPaymentStatusRejected() {
         Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("Niaga", "9999");
+        paymentData.put("bankName", "Niaga");
+        paymentData.put("referenceCode", "12345");
         Payment payment = new Payment(
                 "13652556-012a-4c07-b546-54eb1396d79b",
-                "chopin",
+                "Voucher Code",
                 paymentData,
                 "tanzania"
         );
