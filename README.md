@@ -110,3 +110,69 @@ Without SOLID, my project would become hard to maintain and modify:
 - 
 For example, if CarController were tightly coupled to CarServiceImpl, changing the implementation would break the entire project.
 
+# MODULE 4
+### 1. Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests.
+
+To evaluate the Test-Driven Development (TDD) flow, we can use the self-reflective questions proposed by Percival (2017) in _Principles and Best Practice of Testing_. Below are key considerations:
+
+- Are the tests sufficient to provide confidence that the code works correctly?
+   - The tests cover essential cases, such as adding payments, updating status, retrieving payments by ID, and retrieving all payments.
+   - However, additional edge cases could improve coverage, such as:
+     - Handling payments with incomplete data
+     - Testing for duplicate payments
+
+- Does the test coverage include all functional requirements?
+   - The tests ensure the core functionality of `PaymentServiceImpl`, but it’s important to verify whether all possible execution paths are tested.
+   - For example, do the tests confirm that `paymentRepository.save(payment)` consistently stores updates in all scenarios?
+
+- Are the tests easy to understand and maintain?
+   - Overall, the tests are structured in a clear and consistent manner.
+   - However, certain parts could be clarified, such as the origin of `"pay123"` in `testGetPaymentFound`.
+
+- What improvements can be made in the TDD process moving forward?
+   - Ensure that every ID used in the tests is explicitly defined in `setUp()` to prevent confusion about where certain values come from.
+   - Add more edge cases, such as tests for failed or invalid payments.
+   - Use parameterized tests to reduce code duplication when similar test cases follow a pattern.
+
+The TDD process has been useful in verifying basic functionality. However, improving test coverage, clarifying test data, and adding more edge cases would further enhance the quality of testing in future development.
+
+
+### 2. You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests.
+I think my unit tests in `OrderTest.java`, `OrderRepositoryTest.java`, and `OrderServiceImplTest.java` successfully follow the F.I.R.S.T. principles. Below is my evaluation:
+
+1. Fast
+- The tests run quickly because they do not rely on external systems like databases or APIs.
+- In `OrderServiceImplTest.java`, mocking `OrderRepository` helps avoid slow I/O operations.
+
+2. Isolated 
+- Each test case is independent, using `@BeforeEach` to reset test data.
+- Mocking ensures service tests do not depend on repository logic.
+
+3. Repeatable 
+- Tests produce consistent results since they do not rely on external factors or randomness.
+- Assertions (`assertEquals`, `assertNull`, `assertThrows`) make sure each test has a definitive outcome.
+
+
+
+4. Self-Validating 
+- Every test clearly indicates success or failure with proper assertions.
+- No manual validation is required.
+
+5. Timely 
+- These tests were created **before** the class implementation, aligning perfectly with **Test-Driven Development (TDD)**.
+- Writing tests first helped define expected behavior early in the development process.
+
+While my tests follow F.I.R.S.T. well, here are some improvements I can make:
+
+1. Use Parameterized Tests
+- Instead of duplicating similar test cases with different inputs, I can use `@ParameterizedTest` with `@CsvSource` or `@MethodSource`.
+
+2. Expand Edge Case Coverage
+I should consider testing:
+- Large orders with thousands of products.
+- Orders where a product ID is `null` or a name is empty.
+- Performance when handling a massive dataset.
+
+3. Strengthen Negative Testing
+- More cases where an order creation should fail (e.g., duplicate product IDs, negative timestamps).
+- Additional validation for status changes beyond the `"MEOW"` case.
